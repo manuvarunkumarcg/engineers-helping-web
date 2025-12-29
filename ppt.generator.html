@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>PDF ➜ PPT Generator</title>
+
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<!-- PptxGenJS -->
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+
+<style>
+  body { font-family: Arial; padding: 20px; background:#fafafa; }
+  #viewer { width: 80%; max-width: 900px; margin: 20px auto; position: relative; }
+  .slide {
+    position:absolute; top:0; left:0; width:100%;
+    opacity:0;
+    transition: opacity .6s ease;
+  }
+  .slide.active { opacity:1; position:relative; }
+  img { width:100%; border-radius:16px; box-shadow:0 10px 20px rgba(0,0,0,.15); }
+  #controls button{
+    margin:8px;
+    padding:10px 16px;
+    border-radius:12px;
+    border:none;
+    background:#4f46e5;
+    color:white;
+    cursor:pointer;
+  }
+  #controls button:disabled{background:#aaa;cursor:not-allowed;}
+</style>
+</head>
+
+<body>
+<h2>PDF ➜ PPT Generator with Slide Preview</h2>
+
+<input type="file" id="pdfFile" accept="application/pdf" />
+<button id="download" disabled>Download PPTX</button>
+
+<div id="viewer"></div>
+
+<div id="controls" style="text-align:center; margin-top:10px;">
+  <button id="prev" disabled>◀️ Prev</button>
+  <button id="next" disabled>Next ▶️</button>
+  <button id="play" disabled>Play ▶️</button>
+  <button id="pause" disabled>Pause ⏸</button>
+</div>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+let slideImages = [];
+let currentIndex = 0;
+let timer = null;
+
+const viewer = document.getElementById("viewer");
+const prevBtn = document.getElementById("prev");
+const nextBtn = document.getElementById("next");
+const playBtn = document.getElementById("play");
+const pauseBtn = document.getElementById("pause");
+const downloadBtn = document.getElementById("download");
+
+// Load PDF
+document.getElementById("pdfFile").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  slideImages = [];
+  viewer.innerHTML = "Loading PDF…";
+
+  const arrayBuf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuf }).promise;
+
+  viewer.innerHTML = "";
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const viewport = page.getViewport({ scale: 1.5 });
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    await page.render({ canvasContext: ctx, viewport }).promise;
+
+    const url = canvas.toDataURL("image/png");
+    slideImages.push(url);
+
+    const img = document.createElement("img");
+    img.src = url;
+
+    const div = document.createElement("div");
+    div.className = "slide";
+    div.appendChild(img);
+    viewer.appendChild(div);
+  }
+
+  showSlide(0);
+  enableControls(true);
+});
+
+// Display slide
+function showSlide(i) {
+  const slides = document.querySelectorAll(".slide");
+  slides.forEach(s => s.classList.remove("active"));
+  if (slides[i]) slides[i].classList.add("active");
+  currentIndex = i;
+}
+
+prevBtn.onclick = () => showSlide(Math.max(0, currentIndex - 1));
+nextBtn.onclick = () =>
+  showSlide(Math.min(slideImages.length - 1, currentIndex + 1));
+
+// Auto-play
+playBtn.onclick = () => {
+  if (timer) return;
+  timer = setInterval(() => {
+    if (currentIndex === slideImages.length - 1) currentIndex = -1;
+    showSlide(currentIndex + 1);
+  }, 1800);
+};
+pauseBtn.onclick = () => { clearInterval(timer); timer = null; };
+
+// Enable buttons
+function enableControls(on){
+  prevBtn.disabled = nextBtn.disabled =
+    playBtn.disabled = pauseBtn.disabled =
+    downloadBtn.disabled = !on;
+}
+
+// Build PPTX
+downloadBtn.onclick = () => {
+  if (!slideImages.length) return;
+
+  const pptx = new PptxGenJS();
+  slideImages.forEach(img => {
+    let slide = pptx.addSlide();
+    slide.addImage({ data: img, x:0, y:0, w:10, h:5.63 }); // 16:9
+    slide.transition = { type: "fade" }; // simple transition
+  });
+
+  pptx.writeFile({ fileName: "ConvertedSlides.pptx" });
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat Digital Ballot - Premium Glass UI</title>
+    <style>
+        :root {
+            --saffron: rgba(255, 153, 51, 0.8);
+            --white: rgba(255, 255, 255, 0.4);
+            --green: rgba(19, 136, 8, 0.8);
+            --navy: #000080;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9933, #ffffff, #138808);
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Glassmorphism Container */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            width: 90%;
+            max-width: 550px;
+            text-align: center;
+        }
+
+        h1, h2 { color: var(--navy); font-weight: 700; }
+
+        input {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px;
+            border-radius: 12px;
+            width: 80%;
+            margin: 10px 0;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { background: rgba(255, 255, 255, 0.8); }
+
+        button {
+            background: var(--navy);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Floating Animation for UI elements */
+        .floating-card {
+            background: rgba(255, 255, 255, 0.6);
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: float 4s ease-in-out infinite;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .vote-btn {
+            background: #ff4b2b; /* EVM Alert Red */
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .hidden { display: none; }
+
+        .eci-logo {
+            width: 70px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="page1" class="glass-container">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b3/Election_Commission_of_India_Logo.svg/1200px-Election_Commission_of_India_Logo.svg.png" class="eci-logo" alt="ECI">
+        <h1>Voter Setup</h1>
+        <div id="step1">
+            <input type="number" id="count" placeholder="Number of Candidates">
+            <br>
+            <button onclick="showNameInputs()">Next Step</button>
+        </div>
+        <div id="step2" class="hidden">
+            <div id="nameInputs"></div>
+            <button onclick="startVoting()">Launch E-Ballot</button>
+        </div>
+    </div>
+
+    <div id="page2" class="glass-container hidden">
+        <h2>Election Commission of India</h2>
+        <p style="color: var(--navy); font-weight: 600;">Electronic Voting Interface</p>
+        <div id="ballotArea"></div>
+        <div style="margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px;">
+            <input type="password" id="adminPin" placeholder="Admin PIN" style="width: 100px;">
+            <button onclick="declareResult()" style="background: var(--saffron);">Close Ballot</button>
+        </div>
+    </div>
+
+    <div id="page3" class="glass-container hidden">
+        <h1>Official Result</h1>
+        <div id="winnerDisplay" style="font-size: 1.8rem; margin: 20px 0; font-weight: bold; color: var(--navy);"></div>
+        <div id="details"></div>
+        <button onclick="location.reload()">New Election</button>
+    </div>
+
+    <script>
+        let candidates = [];
+
+        function showNameInputs() {
+            const num = document.getElementById('count').value;
+            if(num < 2) return alert("Enter at least 2 candidates");
+            
+            const area = document.getElementById('nameInputs');
+            area.innerHTML = "";
+            for(let i=1; i<=num; i++) {
+                area.innerHTML += `<input type="text" class="cName" placeholder="Candidate ${i} Name">`;
+            }
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        }
+
+        function startVoting() {
+            const inputs = document.querySelectorAll('.cName');
+            inputs.forEach((input, index) => {
+                if(input.value) candidates.push({ id: index, name: input.value, votes: 0 });
+            });
+
+            if(candidates.length === 0) return alert("Please fill names");
+
+            const ballot = document.getElementById('ballotArea');
+            candidates.forEach(c => {
+                ballot.innerHTML += `
+                    <div class="floating-card" style="animation-delay: ${c.id * 0.2}s">
+                        <span style="font-size: 1.1rem; font-weight: 600;">${c.name}</span>
+                        <button class="vote-btn" onclick="castVote(${c.id})">🗳️</button>
+                    </div>
+                `;
+            });
+
+            document.getElementById('page1').classList.add('hidden');
+            document.getElementById('page2').classList.remove('hidden');
+        }
+
+        function castVote(id) {
+            candidates[id].votes++;
+            alert("Vote registered for " + candidates[id].name);
+        }
+
+        function declareResult() {
+            const pin = document.getElementById('adminPin').value;
+            if(pin !== "1947") return alert("Invalid Admin PIN");
+
+            candidates.sort((a,b) => b.votes - a.votes);
+            const winner = candidates[0];
+            
+            const display = document.getElementById('winnerDisplay');
+            display.innerHTML = `🏆 ${winner.name} 🏆`;
+            document.getElementById('details').innerHTML = `<p>Total Votes: ${winner.votes}</p>`;
+
+            document.getElementById('page2').classList.add('hidden');
+            document.getElementById('page3').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Formula Solver</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .section { margin-bottom: 30px; }
+        input { width: 60px; padding: 8px; margin: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin-top: 15px; padding: 10px; background: #e9ecef; border-radius: 4px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Math Handbook Solver</h1>
+
+    <div class="section">
+        <h2>1. Distance Between Two Points</h2>
+        <p>Formula: $\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2 + (z_2-z_1)^2}$</p>
+        P1: <input type="number" id="x1" placeholder="x1"> <input type="number" id="y1" placeholder="y1"> <input type="number" id="z1" placeholder="z1"><br>
+        P2: <input type="number" id="x2" placeholder="x2"> <input type="number" id="y2" placeholder="y2"> <input type="number" id="z2" placeholder="z2"><br>
+        <button onclick="solveDistance()">Calculate Distance</button>
+        <div id="distResult" class="result">Result: --</div>
+    </div>
+
+    <div class="section">
+        <h2>2. Vector Cross Product (A × B)</h2>
+        Vector A: <input type="number" id="a1" placeholder="a1"> <input type="number" id="a2" placeholder="a2"> <input type="number" id="a3" placeholder="a3"><br>
+        Vector B: <input type="number" id="b1" placeholder="b1"> <input type="number" id="b2" placeholder="b2"> <input type="number" id="b3" placeholder="b3"><br>
+        <button onclick="solveCrossProduct()">Calculate A × B</button>
+        <div id="vectorResult" class="result">Result: --</div>
+    </div>
+</div>
+
+<script>
+    // Logic for Distance Formula
+    function solveDistance() {
+        const x1 = parseFloat(document.getElementById('x1').value) || 0;
+        const y1 = parseFloat(document.getElementById('y1').value) || 0;
+        const z1 = parseFloat(document.getElementById('z1').value) || 0;
+        const x2 = parseFloat(document.getElementById('x2').value) || 0;
+        const y2 = parseFloat(document.getElementById('y2').value) || 0;
+        const z2 = parseFloat(document.getElementById('z2').value) || 0;
+
+        const dist = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2) + Math.pow(z2-z1, 2));
+        document.getElementById('distResult').innerText = "Distance: " + dist.toFixed(4);
+    }
+
+    // Logic for Cross Product
+    function solveCrossProduct() {
+        const a1 = parseFloat(document.getElementById('a1').value) || 0;
+        const a2 = parseFloat(document.getElementById('a2').value) || 0;
+        const a3 = parseFloat(document.getElementById('a3').value) || 0;
+        const b1 = parseFloat(document.getElementById('b1').value) || 0;
+        const b2 = parseFloat(document.getElementById('b2').value) || 0;
+        const b3 = parseFloat(document.getElementById('b3').value) || 0;
+
+        // i(a2b3 - a3b2) - j(a1b3 - a3b1) + k(a1b2 - a2b1)
+        const i = (a2 * b3) - (a3 * b2);
+        const j = (a1 * b3) - (a3 * b1);
+        const k = (a1 * b2) - (a2 * b1);
+
+        document.getElementById('vectorResult').innerText = `Result: ${i}î - ${j}ĵ + ${k}k̂`;
+    }
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Math Handbook Solver</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; color: #333; line-height: 1.6; }
+        .container { max-width: 800px; margin: 30px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h1 { text-align: center; color: #1a73e8; }
+        .card { border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; transition: 0.3s; }
+        .card:hover { border-color: #1a73e8; }
+        input, select { padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; width: 100%; box-sizing: border-box; }
+        .row { display: flex; gap: 10px; }
+        button { background: #1a73e8; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px;}
+        button:hover { background: #1557b0; }
+        .result-box { margin-top: 15px; padding: 15px; background: #f8f9fa; border-left: 5px solid #1a73e8; font-family: 'Courier New', Courier, monospace; }
+        label { font-weight: bold; font-size: 0.9em; color: #555; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Engineering Mathematics Solver</h1>
+
+    <div class="card">
+        <h3>1. Jacobian Solver: J = ∂(u,v) / ∂(x,y)</h3>
+        <p><small>Calculates the determinant of partial derivatives.</small></p>
+        <label>Function u(x, y):</label>
+        <input type="text" id="fnU" placeholder="e.g., x^2 + y^2">
+        <label>Function v(x, y):</label>
+        <input type="text" id="fnV" placeholder="e.g., x * y">
+        <label>Evaluate at point (x, y):</label>
+        <div class="row">
+            <input type="number" id="jacX" value="1">
+            <input type="number" id="jacY" value="1">
+        </div>
+        <button onclick="calculateJacobian()">Calculate Jacobian</button>
+        <div id="jacOutput" class="result-box">Result: --</div>
+    </div>
+
+    <div class="card">
+        <h3>2. Radius of Curvature (ρ)</h3>
+        <p><small>Formula: ρ = [1 + (y')²]^(3/2) / |y''|</small></p>
+        <label>Function y(x):</label>
+        <input type="text" id="fnCurve" placeholder="e.g., x^3">
+        <label>At x =</label>
+        <input type="number" id="curveX" value="1">
+        <button onclick="calculateCurvature()">Calculate ρ</button>
+        <div id="curveOutput" class="result-box">Result: --</div>
+    </div>
+</div>
+
+<script>
+    function calculateJacobian() {
+        const uStr = document.getElementById('fnU').value;
+        const vStr = document.getElementById('fnV').value;
+        const xVal = parseFloat(document.getElementById('jacX').value);
+        const yVal = parseFloat(document.getElementById('jacY').value);
+
+        try {
+            // Partial Derivatives
+            const du_dx = math.derivative(uStr, 'x').evaluate({x: xVal, y: yVal});
+            const du_dy = math.derivative(uStr, 'y').evaluate({x: xVal, y: yVal});
+            const dv_dx = math.derivative(vStr, 'x').evaluate({x: xVal, y: yVal});
+            const dv_dy = math.derivative(vStr, 'y').evaluate({x: xVal, y: yVal});
+
+            // Determinant (du/dx * dv/dy - du/dy * dv/dx)
+            const jacobian = (du_dx * dv_dy) - (du_dy * dv_dx);
+            document.getElementById('jacOutput').innerHTML = `J = ${jacobian.toFixed(4)}`;
+        } catch (e) {
+            document.getElementById('jacOutput').innerHTML = "Error: Check function syntax.";
+        }
+    }
+
+    function calculateCurvature() {
+        const yStr = document.getElementById('fnCurve').value;
+        const xVal = parseFloat(document.getElementById('curveX').value);
+
+        try {
+            const dy = math.derivative(yStr, 'x');
+            const d2y = math.derivative(dy, 'x');
+
+            const y1 = dy.evaluate({x: xVal});
+            const y2 = d2y.evaluate({x: xVal});
+
+            // Formula: ρ = (1 + y1^2)^(3/2) / |y2|
+            const numerator = Math.pow(1 + Math.pow(y1, 2), 1.5);
+            const rho = numerator / Math.abs(y2);
+
+            document.getElementById('curveOutput').innerHTML = `ρ = ${rho.toFixed(4)}`;
+        } catch (e) {
+            document.getElementById('curveOutput').innerHTML = "Error: Check function syntax.";
+        }
+    }
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Engineering Math Solver v3</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .card { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 20px; margin-bottom: 25px; border-left: 6px solid #28a745; }
+        h2 { color: #2c3e50; margin-top: 0; font-size: 1.4em; }
+        label { display: block; margin-top: 10px; font-weight: 600; font-size: 0.9em; }
+        input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { background: #28a745; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 15px; font-size: 1em; }
+        button:hover { background: #218838; }
+        .result { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 5px; font-family: 'Consolas', monospace; white-space: pre-wrap; color: #155724; font-weight: bold; }
+        .row { display: flex; gap: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="text-align: center;">Math Handbook Solver - Advanced</h1>
+
+    <div class="card">
+        <h2>3. Maclaurin Series Expansion (to 4th term)</h2>
+        <p><small>Formula: y(0) + x/1! y'(0) + x²/2! y''(0) + ...</small></p>
+        <label>Function f(x):</label>
+        <input type="text" id="fnMac" placeholder="e.g., sin(x) or exp(x)">
+        <button onclick="solveMaclaurin()">Generate Series</button>
+        <div id="macOutput" class="result">Result: --</div>
+    </div>
+
+    <div class="card" style="border-left-color: #dc3545;">
+        <h2>4. Gradient, Divergence, and Curl</h2>
+        <label>Scalar Field φ(x,y,z) [for Gradient]:</label>
+        <input type="text" id="scalPhi" placeholder="e.g., x*y*z">
+        
+        <label>Vector Field F = f1 i + f2 j + f3 k [for Div/Curl]:</label>
+        <div class="row">
+            <input type="text" id="f1" placeholder="f1 (i component)">
+            <input type="text" id="f2" placeholder="f2 (j component)">
+            <input type="text" id="f3" placeholder="f3 (k component)">
+        </div>
+        
+        <button onclick="solveVectorCalculus()" style="background:#dc3545;">Calculate Vector Ops</button>
+        <div id="vecOutput" class="result">Result: --</div>
+    </div>
+</div>
+
+<script>
+    function solveMaclaurin() {
+        const fStr = document.getElementById('fnMac').value;
+        try {
+            const f = math.parse(fStr);
+            const d1 = math.derivative(f, 'x');
+            const d2 = math.derivative(d1, 'x');
+            const d3 = math.derivative(d2, 'x');
+
+            const v0 = f.evaluate({x: 0});
+            const v1 = d1.evaluate({x: 0});
+            const v2 = d2.evaluate({x: 0});
+            const v3 = d3.evaluate({x: 0});
+
+            const series = `${v0.toFixed(2)} + (${v1.toFixed(2)})x + (${(v2/2).toFixed(2)})x² + (${(v3/6).toFixed(2)})x³ + ...`;
+            document.getElementById('macOutput').innerText = "Series: " + series;
+        } catch (e) {
+            document.getElementById('macOutput').innerText = "Error in function syntax.";
+        }
+    }
+
+    function solveVectorCalculus() {
+        const phiStr = document.getElementById('scalPhi').value;
+        const f1Str = document.getElementById('f1').value;
+        const f2Str = document.getElementById('f2').value;
+        const f3Str = document.getElementById('f3').value;
+        let out = "";
+
+        try {
+            // 1. Gradient
+            if(phiStr) {
+                const gradX = math.derivative(phiStr, 'x').toString();
+                const gradY = math.derivative(phiStr, 'y').toString();
+                const gradZ = math.derivative(phiStr, 'z').toString();
+                out += `GRADIENT (∇φ): (${gradX})i + (${gradY})j + (${gradZ})k\n\n`;
+            }
+
+            // 2. Divergence
+            if(f1Str && f2Str && f3Str) {
+                const div = math.simplify(`${math.derivative(f1Str, 'x')} + ${math.derivative(f2Str, 'y')} + ${math.derivative(f3Str, 'z')}`).toString();
+                out += `DIVERGENCE (∇·F): ${div}\n\n`;
+
+                // 3. Curl
+                const curlI = math.simplify(`${math.derivative(f3Str, 'y')} - ${math.derivative(f2Str, 'z')}`).toString();
+                const curlJ = math.simplify(`${math.derivative(f1Str, 'z')} - ${math.derivative(f3Str, 'x')}`).toString();
+                const curlK = math.simplify(`${math.derivative(f2Str, 'x')} - ${math.derivative(f1Str, 'y')}`).toString();
+                out += `CURL (∇×F): (${curlI})i + (${curlJ})j + (${curlK})k`;
+            }
+
+            document.getElementById('vecOutput').innerText = out || "Please enter functions above.";
+        } catch (e) {
+            document.getElementById('vecOutput').innerText = "Error: Check your function variables (use x, y, z).";
+        }
+    }
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Engineering Math Solver - Special Functions</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #eceff1; padding: 20px; color: #263238; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .card { border: 1px solid #cfd8dc; padding: 20px; border-radius: 10px; margin-bottom: 20px; background: #fff; border-top: 5px solid #673ab7; }
+        h2 { color: #4527a0; margin-top: 0; display: flex; align-items: center; }
+        label { display: block; margin: 10px 0 5px; font-weight: bold; }
+        input { width: 100%; padding: 10px; border: 1px solid #b0bec5; border-radius: 4px; box-sizing: border-box; }
+        button { background: #673ab7; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 15px; font-size: 1.1em; transition: 0.2s; }
+        button:hover { background: #5e35b1; }
+        .result-panel { margin-top: 15px; padding: 15px; background: #f3e5f5; border-radius: 4px; font-family: monospace; border-left: 4px solid #673ab7; }
+        .formula-ref { font-size: 0.85em; color: #546e7a; font-style: italic; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="text-align:center; color:#37474f;">Math Handbook Solver - v4.0</h1>
+
+    <div class="card">
+        <h2>5. Beta & Gamma Functions</h2>
+        <div class="formula-ref">
+            Rel: β(m,n) = [Γ(m)Γ(n)] / Γ(m+n) | Γ(1/2) = √π
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1;">
+                <label>Value for m (or n):</label>
+                <input type="number" id="valM" step="0.1" value="2" placeholder="e.g. 0.5 for √π">
+                <button onclick="calcGamma()">Calculate Γ(m)</button>
+            </div>
+            <div style="flex: 1;">
+                <label>Value for n (for Beta):</label>
+                <input type="number" id="valN" step="0.1" value="3">
+                <button onclick="calcBeta()">Calculate β(m,n)</button>
+            </div>
+        </div>
+        <div id="specialOutput" class="result-panel">Result: --</div>
+    </div>
+
+    <div class="card" style="border-top-color: #009688;">
+        <h2 style="color: #00695c;">6. Multiple Integral Formulas</h2>
+        <p>This section serves as a reference for the Integral Geometry formulas in your notes:</p>
+        <div style="background: #e0f2f1; padding: 15px; border-radius: 8px;">
+            <ul style="list-style-type: square; line-height: 1.8;">
+                <li><strong>Area (Cartesian):</strong> $$A = \iint_A dx\,dy$$</li>
+                <li><strong>Area (Polar):</strong> $$A = \iint_A r\,dr\,d\theta$$</li>
+                <li><strong>Volume (3D):</strong> $$V = \iiint_V dx\,dy\,dz$$</li>
+                <li><strong>Volume (Double Int):</strong> $$V = \iint_A z\,dx\,dy$$</li>
+            </ul>
+        </div>
+        <p><small>* Note: Complex limits require numerical integration libraries like SciPy or specialized JS modules.</small></p>
+    </div>
+</div>
+
+<script>
+    // Lanczos approximation for Gamma function
+    function gamma(n) {
+        if (n === 0.5) return Math.sqrt(Math.PI);
+        var g = 7;
+        var p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+                 771.32342877765313, -176.61502916214059, 12.507343278686905,
+                 -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+        if (n < 0.5) return Math.PI / (Math.sin(Math.PI * n) * gamma(1 - n));
+        n -= 1;
+        var x = p[0];
+        for (var i = 1; i < g + 2; i++) x += p[i] / (n + i);
+        var t = n + g + 0.5;
+        return Math.sqrt(2 * Math.PI) * Math.pow(t, (n + 0.5)) * Math.exp(-t) * x;
+    }
+
+    function calcGamma() {
+        const m = parseFloat(document.getElementById('valM').value);
+        try {
+            const res = gamma(m);
+            document.getElementById('specialOutput').innerHTML = `Γ(${m}) ≈ ${res.toFixed(6)}`;
+        } catch(e) {
+            document.getElementById('specialOutput').innerHTML = "Error: Input must be > 0";
+        }
+    }
+
+    function calcBeta() {
+        const m = parseFloat(document.getElementById('valM').value);
+        const n = parseFloat(document.getElementById('valN').value);
+        try {
+            // Using formula from Page 9: β(m,n) = Γ(m)Γ(n) / Γ(m+n)
+            const res = (gamma(m) * gamma(n)) / gamma(m + n);
+            document.getElementById('specialOutput').innerHTML = `β(${m}, ${n}) ≈ ${res.toFixed(6)}`;
+        } catch(e) {
+            document.getElementById('specialOutput').innerHTML = "Error calculating Beta.";
+        }
+    }
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Math Handbook Solver v5.0</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #fdfdfd; padding: 20px; color: #444; }
+        .container { max-width: 900px; margin: auto; }
+        .card { background: white; border: 1px solid #eee; border-radius: 12px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 5px solid #ff5722; }
+        h2 { color: #e64a19; margin-top: 0; font-size: 1.3em; }
+        .formula-box { background: #fff5f2; border: 1px dashed #ff5722; padding: 10px; font-size: 0.9em; margin-bottom: 15px; border-radius: 4px; }
+        input { width: 100%; padding: 12px; margin-top: 8px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { background: #ff5722; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold; }
+        button:hover { background: #f4511e; }
+        .result-area { margin-top: 15px; padding: 15px; background: #fafafa; border-radius: 6px; border-left: 4px solid #ff5722; font-family: 'Courier New', monospace; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="text-align: center; color: #333;">Polar Curves & Euler's Theorem Solver</h1>
+
+    <div class="card">
+        <h2>7. Polar Curves: Angle φ</h2>
+        <div class="formula-box">
+            Formula: cot
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Math Handbook Solver v6.0</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: auto; }
+        .card { background: white; border-radius: 12px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid #009688; }
+        h2 { color: #00796b; margin-top: 0; font-size: 1.4em; }
+        .formula-display { background: #e0f2f1; padding: 10px; border-radius: 6px; font-size: 0.9em; margin-bottom: 15px; color: #004d40; }
+        label { display: block; margin: 12px 0 5px; font-weight: bold; }
+        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { background: #009688; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 15px; font-size: 1.1em; }
+        button:hover { background: #00897b; }
+        .result-box { margin-top: 15px; padding: 15px; background: #f1f8e9; border-left: 5px solid #009688; font-family: 'Consolas', monospace; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="text-align: center; color: #263238;">Advanced Multi-Variable Solvers</h1>
+
+    <div class="card">
+        <h2>9. Composite Functions (Total Derivative)</h2>
+        <div class="formula-display">
+            [span_0](start_span)Formula: dz/dt = (∂z/∂x)(dx/dt) + (∂z/∂y)(dy/dt)[span_0](end_span)
+        </div>
+        <label>Function z(x, y):</label>
+        <input type="text" id="fnZ" placeholder="e.g., x^2 + y^2">
+        <label>x as a function of t [x(t)]:</label>
+        <input type="text" id="fnX" placeholder="e.g., cos(t)">
+        <label>y as a function of t [y(t)]:</label>
+        <input type="text" id="fnY" placeholder="e.g., sin(t)">
+        <label>Evaluate at t =</label>
+        <input type="number" id="valT" value="0">
+        <button onclick="solveTotalDerivative()">Calculate dz/dt</button>
+        <div id="compOutput" class="result-box">Result: --</div>
+    </div>
+
+    <div class="card" style="border-top-color: #673ab7;">
+        <h2 style="color: #512da8;">10. Taylor Series (Two Variables)</h2>
+        <div class="formula-display" style="background: #ede7f6; color: #311b92;">
+            [span_1](start_span)f(x,y) ≈ f(a,b) + (x-a)fₓ(a,b) + (y-b)fᵧ(a,b) + ...[span_1](end_span)
+        </div>
+        <label>Function f(x, y):</label>
+        <input type="text" id="fn2V" placeholder="e.g., exp(x) * log(1+y)">
+        <label>Expand around point (a, b):</label>
+        <div style="display: flex; gap: 10px;">
+            <input type="number" id="ptA" value="0" placeholder="a">
+            <input type="number" id="ptB" value="0" placeholder="b">
+        </div>
+        <button onclick="solveTaylor2V()" style="background: #673ab7;">Expand to 1st Order</button>
+        <div id="taylor2VOutput" class="result-box">Result: --</div>
+    </div>
+</div>
+
+<script>
+    function solveTotalDerivative() {
+        const zStr = document.getElementById('fnZ').value;
+        const xStr = document.getElementById('fnX').value;
+        const yStr = document.getElementById('fnY').value;
+        const tVal = parseFloat(document.getElementById('valT').value);
+
+        try {
+            // Calculate x and y at given t
+            const xAtT = math.evaluate(xStr, {t: tVal});
+            const yAtT = math.evaluate(yStr, {t: tVal});
+
+            // Partial derivatives ∂z/∂x and ∂z/∂y
+            const dz_dx = math.derivative(zStr, 'x').evaluate({x: xAtT, y: yAtT});
+            const dz_dy = math.derivative(zStr, 'y').evaluate({x: xAtT, y: yAtT});
+
+            // Derivatives dx/dt and dy/dt
+            const dx_dt = math.derivative(xStr, 't').evaluate({t: tVal});
+            const dy_dt = math.derivative(yStr, 't').evaluate({t: tVal});
+
+            // Total Derivative dz/dt
+            const result = (dz_dx * dx_dt) + (dz_dy * dy_dt);
+            document.getElementById('compOutput').innerText = `dz/dt at t=${tVal}: ${result.toFixed(4)}`;
+        } catch (e) {
+            document.getElementById('compOutput').innerText = "Error: Check your function syntax.";
+        }
+    }
+
+    function solveTaylor2V() {
+        const fStr = document.getElementById('fn2V').value;
+        const a = parseFloat(document.getElementById('ptA').value);
+        const b = parseFloat(document.getElementById('ptB').value);
+
+        try {
+            const f_ab = math.evaluate(fStr, {x: a, y: b});
+            const fx_ab = math.derivative(fStr, 'x').evaluate({x: a, y: b});
+            const fy_ab = math.derivative(fStr, 'y').evaluate({x: a, y: b});
+
+            const expansion = `${f_ab.toFixed(2)} + (x-${a})(${fx_ab.toFixed(2)}) + (y-${b})(${fy_ab.toFixed(2)})`;
+            document.getElementById('taylor2VOutput').innerText = `Linear Approximation:\n${expansion}`;
+        } catch (e) {
+            document.getElementById('taylor2VOutput').innerText = "Error: Check syntax or point values.";
+        }
+    }
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Math Handbook Solver v7.0</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: auto; }
+        .card { background: white; border-radius: 12px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid #607d8b; }
+        h2 { color: #455a64; margin-top: 0; font-size: 1.4em; }
+        .formula-tag { background: #eceff1; padding: 8px; border-radius: 4px; font-size: 0.85em; color: #37474f; margin-bottom: 15px; border-left: 3px solid #607d8b; }
+        label { display: block; margin: 12px 0 5px; font-weight: bold; }
+        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { background: #607d8b; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 15px; font-size: 1.1em; }
+        button:hover { background: #546e7a; }
+        .result-box { margin-top: 15px; padding: 15px; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; white-space: pre-wrap; font-family: 'Consolas', monospace; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="text-align: center; color: #2c3e50;">Limits & Optimization Solver</h1>
+
+    <div class="card">
+        <h2>11. Indeterminate Forms (L'Hospital's Rule)</h2>
+        <div class="formula-tag">
+            If lim f(x)/g(x) = 0/0 or ∞/∞, then Limit = lim f'(x)/g'(x)
+        </div>
+        <label>Numerator f(x):</label>
+        <input type="text" id="numF" placeholder="e.g., sin(x) - x">
+        <label>Denominator g(x):</label>
+        <input type="text" id="denG" placeholder="e.g., x^3">
+        <label>Limit as x approaches:</label>
+        <input type="number" id="limitX" value="0">
+        <button onclick="solveLimit()">Evaluate Limit</button>
+        <div id="limitOutput" class="result-box">Result: --</div>
+    </div>
+
+    <div class="card" style="border-top-color: #e91e63;">
+        <h2 style="color: #c2185b;">12. Maxima & Minima (Two Variables)</h2>
+        <div class="formula-tag" style="background: #fce4ec; color: #880e4f; border-color: #e91e63;">
+            Conditions: r = fₓₓ, s = fₓᵧ, t = fᵧᵧ. <br>
+            Calculate Δ = rt - s². Maxima if Δ > 0, r < 0. Minima if Δ > 0, r > 0.
+        </div>
+        <label>Function f(x, y):</label>
+        <input type="text" id="fnOpt" placeholder="e.g., x^3 + y^3 - 3*x*y">
+        <label>Test Point (x, y):</label>
+        <div style="display: flex; gap: 10px;">
+            <input type="number" id="optX" placeholder="x">
+            <input type="number" id="optY" placeholder="y">
+        </div>
+        <button onclick="solveOptimization()" style="background: #e91e63;">Check Point Stability</button>
+        <div id="optOutput" class="result-box">Result: --</div>
+    </div>
+</div>
+
+<script>
+    function solveLimit() {
+        const f = document.getElementById('numF').value;
+        const g = document.getElementById('denG').value;
+        const xVal = parseFloat(document.getElementById('limitX').value);
+
+        try {
+            let fVal = math.evaluate(f, {x: xVal});
+            let gVal = math.evaluate(g, {x: xVal});
+
+            let result;
+            // Basic L'Hospital check (if values are near zero)
+            if (Math.abs(fVal) < 0.0001 && Math.abs(gVal) < 0.0001) {
+                const df = math.derivative(f, 'x');
+                const dg = math.derivative(g, 'x');
+                const dfVal = df.evaluate({x: xVal});
+                const dgVal = dg.evaluate({x: xVal});
+                result = dfVal / dgVal;
+                document.getElementById('limitOutput').innerText = `Limit (via 1st L'Hospital): ${result.toFixed(6)}`;
+            } else {
+                result = fVal / gVal;
+                document.getElementById('limitOutput').innerText = `Direct Limit: ${result.toFixed(6)}`;
+            }
+        } catch (e) {
+            document.getElementById('limitOutput').innerText = "Error in expressions.";
+        }
+    }
+
+    function solveOptimization() {
+        const fn = document.getElementById('fnOpt').value;
+        const x = parseFloat(document.getElementById('optX').value);
+        const y = parseFloat(document.getElementById('optY').value);
+
+        try {
+            const scope = {x: x, y: y};
+            const fxx = math.derivative(math.derivative(fn, 'x'), 'x').evaluate(scope);
+            const fyy = math.derivative(math.derivative(fn, 'y'), 'y').evaluate(scope);
+            const fxy = math.derivative(math.derivative(fn, 'x'), 'y').evaluate(scope);
+
+            const r = fxx;
+            const s = fxy;
+            const t = fyy;
+            const delta = (r * t) - (s * s);
+
+            let conclusion = "";
+            if (delta > 0) {
+                conclusion = (r > 0) ? "Minimum Point" : "Maximum Point";
+            } else if (delta < 0) {
+                conclusion = "Saddle Point";
+            } else {
+                conclusion = "Test Inconclusive (Δ = 0)";
+            }
+
+            document.getElementById('optOutput').innerText = 
+                `Values: r=${r.toFixed(2)}, s=${s.toFixed(2)}, t=${t.toFixed(2)}\n` +
+                `Discriminant (Δ = rt - s²): ${delta.toFixed(2)}\n` +
+                `Conclusion: ${conclusion}`;
+        } catch (e) {
+            document.getElementById('optOutput').innerText = "Error calculating derivatives.";
+        }
+    }
+</script>
+
+</body>
+</html>
